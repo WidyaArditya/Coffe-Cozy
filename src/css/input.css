@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* style navbar */
+/* nav in-out */
+.nav-fixed {
+  @apply fixed transition-all duration-300 ease-in-out transform;
+}
+
+.smoth-nav {
+  @apply -translate-y-full opacity-0;
+}
+
+/* span for hamburger button */
+.hamburger-line {
+  @apply w-[30px] h-[2px] my-2 block bg-white mb-3 active:mt-0 ease-in-out origin-bottom-right;
+}
+
+/* text style for menu */
+.text-line {
+  @apply text-base sm:text-lg font-poppins after:content-[''] after:block after:w-0 after:h-[2px] after:mt-2 after:duration-300 after:border-b-2 after:border-[#FEFAF6] hover:after:duration-300 hover:after:ease-in-out lg:hover:after:scale-x-50 after:scale-x-0 after:transform after:origin-center hover:after:w-auto hover:after:scale-x-[5%] text-[#FEFAF6] transition duration-300 group-hover:text-[#102C57] group-active:opacity-30;
+}
+
+/* position after click for hamburger button */
+.hamburger-active > span:nth-child(1) {
+  @apply -rotate-45 mb-[1.13rem];
+}
+
+.hamburger-active > span:nth-child(2) {
+  @apply rotate-45 mt-[1.16rem];
+}
+
+/* style humberger button */
+.hamburger-btn {
+  @apply absolute w-full py-7 bg-white shadow-md right-[0.1rem] top-10 backdrop-blur-md bg-opacity-65;
+}
+
+/* styel for menu after click*/
+.main-menu {
+  @apply right-0 left-0 w-full top-[2.56rem]  lg:bg-transparent backdrop-blur-lg bg-[#DAC0A3]/50;
+}
+
+/* style for transition hamburger menu*/
+.menu-enter {
+  @apply opacity-0 scale-y-0 transition-all duration-500 ease-in-out origin-top;
+}
+
+.menu-enter-active {
+  @apply transition duration-500 ease-in-out transform translate-y-0 scale-y-100 opacity-100 origin-top;
+}
+
+.menu-leave {
+  @apply transition-all scale-y-100 opacity-100 duration-0 origin-top;
+}
+
+.menu-leave-active {
+  @apply opacity-0 scale-y-0 transition duration-500 ease-in-out origin-top;
+}
+/* style search-box */
+.search-enter {
+  @apply opacity-0 -translate-y-full transition-all duration-500 ease-in-out delay-200;
+}
+
+.search-enter-active {
+  @apply transition duration-500 ease-in-out transform translate-y-0 opacity-100;
+}
+
+.search-leave {
+  @apply transition-all translate-y-0 opacity-100 duration-500 ease-in-out delay-200;
+}
+
+.search-leave-active {
+  @apply opacity-0 -translate-y-full transition duration-500 ease-in-out;
+}
+
+/* menu section */
+.item-menu {
+  @apply flex-shrink-0 w-full  md:w-1/2 lg:w-1/3 xxl:w-1/4 h-auto p-3 mr-[21.6px] md:mr-2 lg:mr-1 lg:p-1 transition-all bg-white rounded-lg shadow-lg hover:shadow-lg;
+}
+
+.button-filter {
+  @apply px-4 py-2 text-sm sm:text-base md:text-lg font-semibold xxl:px-5 xxl:py-3 xxl:text-2xl text-white bg-coffe rounded-lg hover:bg-[#102C57] transition-all;
+}
+/* popup checkout */
+.popup-price-before-discount {
+  @apply font-light line-through;
+}
+.popup-price-after-discount {
+  @apply text-xl font-bold text-coffe;
+}
+.price-before-discount {
+  @apply font-light line-through;
+}
+
+/* contact-section */
+.icons-contact-style {
+  @apply inline-block mr-2;
+}
+
+.input-contact-style {
+  @apply w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#102C57];
+}
+
+.send-button-contact {
+  @apply block px-4 py-2 mx-auto text-lg font-semibold text-center text-white rounded-lg bg-coffe lg:mx-auto md:mx-auto sm:mx-auto hover:drop-shadow-md active:scale-95;
+}
