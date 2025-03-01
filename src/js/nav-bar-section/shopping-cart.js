@@ -96,7 +96,7 @@ function updateCartDisplay() {
   cartItems.forEach((item, index) => {
     total += item.total;
     const cartItem = document.createElement('div');
-    cartItem.className = 'relative flex items-center justify-between w-full p-4 cart-item';
+    cartItem.className = 'relative flex items-center justify-between w-full p-4 m-4 shadow-lg cart-item';
     cartItem.innerHTML = `
           <div class="flex items-center flex-1 ">
               <img src="${item.image}" class="w-16 h-16 object-cover" alt="${item.name}">
