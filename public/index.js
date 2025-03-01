@@ -6,6 +6,17 @@ import '../src/js/nav-bar-section/hamburger.js';
 import '../src/js/nav-bar-section/nav-bar.js';
 import '../src/js/nav-bar-section/search.js';
 import '../src/js/nav-bar-section/shopping-cart.js';
+// index.js
+const menuLinks = document.querySelectorAll('.text-line');
+
+menuLinks.forEach((link) => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const sectionId = link.getAttribute('href');
+    const section = document.querySelector(sectionId);
+    section.scrollIntoView({ behavior: 'smooth' });
+  });
+});
 async function init() {
   const filterButtons = document.querySelectorAll('.filter-button');
   const menuItems = document.querySelectorAll('.menu-item');
