@@ -17,14 +17,14 @@
     <!-- nav start -->
     <nav
       id="head"
-      class="top-0 left-0 flex fixed items-center w-full py-3 lg:py-1 border-b-[1px] border-b-[#EADBC8] z-[999] bg-[#DAC0A3]"
+      class="nav-style"
     >
       <div class="container mx-auto">
         <div class="relative flex items-center justify-between px-2">
           <div class="md:ml-4 lg:ml-12">
             <a
               href="#home"
-              class="text-xl italic font-bold md:text-2xl text-coffe font-roboto-bold"
+              class="brand"
               >Coffee<span class="text-[#FEFAF6]">Cozy</span>
             </a>
           </div>
@@ -40,9 +40,9 @@
             </button>
             <nav
               id="nav-menu"
-              class="absolute hidden w-full main-menu backdrop-filter lg:static lg:block"
+              class="menu-list"
             >
-              <ul class="block w-full text-center lg:flex lg:space-x-3 lg:mr-12">
+              <ul class="list-ul">
                 <li class="p-1 group">
                   <a
                     href="#home"
@@ -83,14 +83,14 @@
             <button id="search">
               <i
                 data-feather="search"
-                class="text-white transition-transform duration-200 translate-x-5 -translate-y-5 hover:-translate-y-[1.35rem] active:opacity-35"
+                class="nav-icon"
               ></i>
             </button>
             <!-- shopping-cart start -->
             <button id="shopping-cart">
               <i
                 data-feather="shopping-cart"
-                class="text-white transition-transform duration-200 translate-x-5 -translate-y-5 hover:-translate-y-[1.35rem] active:opacity-35"
+                class="nav-icon"
               ></i>
             </button>
           </div>
@@ -108,14 +108,14 @@
       <input
         id="fullscreen-search-box"
         type="search"
-        class="absolute w-1/2 h-10 pl-4 text-lg text-white -translate-x-1/2 -translate-y-1/2 bg-gray-700 rounded-md bg-opacity-35 top-1/2 left-1/2 focus:outline-none focus:ring-2 focus:ring-slate-50"
+        class="search-box"
         placeholder="Search..."
       />
 
       <!-- Elemen dengan id arrow-up-circle -->
       <button
         id="arrow-up-circle"
-        class="absolute p-2 -translate-x-1/2 bg-gray-200 rounded-full cursor-pointer left-1/2 top-6"
+        class="arrow-up"
       >
         <i
           data-feather="arrow-up-circle"
@@ -157,7 +157,7 @@
         <button
           type="button"
           id="checkout-shopping-cart"
-          class="block px-3 py-2 mx-auto mt-4 font-semibold text-white rounded-md bg-coffe hover:drop-shadow-md active:scale-95"
+          class="checkout-button"
         >
           Checkout <span class="total-price-cart"></span>
         </button>

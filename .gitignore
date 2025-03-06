@@ -23,3 +23,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+node_modules/
+./public/css/output.css
+dist/
+build/
+*.log
+.cache/
+.vscode/
