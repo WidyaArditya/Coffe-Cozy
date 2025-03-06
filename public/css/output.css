@@ -688,8 +688,9 @@ video {
   z-index: 9999;
 }
 
-.m-4{
-  margin: 1rem;
+.mx-4{
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .mx-5{
@@ -1236,6 +1237,12 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
+.shadow-\[5px_5px_5px_rgb\(0\2c 0\2c 0\2c 0\.25\)\]{
+  --tw-shadow: 5px 5px 5px rgb(0,0,0,0.25);
+  --tw-shadow-colored: 5px 5px 5px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .shadow-lg{
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
@@ -1494,6 +1501,21 @@ video {
   margin-top: 1.16rem;
   --tw-rotate: 45deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+/* cart count */
+
+.cart-count{
+  position: absolute;
+  top: -2rem;
+  left: 4rem;
+  font-family: Poppins, Sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+  text-decoration-line: underline;
 }
 
 /* style humberger button */

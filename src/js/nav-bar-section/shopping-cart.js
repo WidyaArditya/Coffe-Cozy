@@ -5,22 +5,15 @@ const closeArrowButton = document.querySelector('#arrow-left');
 const menuItems = document.querySelectorAll('.menu-item');
 const popup = document.querySelector('#popup');
 let cartItems = [];
+let cartCount = '';
 // shopping-cart.js (Perbaikan Final)
 const toggleCart = (e) => {
-  const isCartOpen = !cart.classList.contains('hidden');
-  // Toggle cart visibility
   cart.classList.toggle('hidden');
-  // Toggle body classes
-  if (isCartOpen) {
-    document.body.classList.toggle('overflow-hidden');
-  } else {
-    document.body.classList.toggle('overflow-hidden');
-  }
+  document.body.classList.toggle('overflow-hidden');
   e.preventDefault();
 };
+[shoppingCartButton, closeArrowButton].forEach((button) => button.addEventListener('click', toggleCart));
 
-shoppingCartButton.addEventListener('click', toggleCart);
-closeArrowButton.addEventListener('click', toggleCart);
 // popup-checkout
 menuItems.forEach((menuItem) => {
   const checkoutButton = menuItem.querySelector('#Checkout');
@@ -65,7 +58,6 @@ const popupButtonCheckout = document.querySelector('#popup-button-checkout');
 const totalPrice = popupButtonCheckout.querySelector('.total-price');
 
 popupButtonCheckout.addEventListener('click', (e) => {
-  e.preventDefault();
   const name = popup.querySelector('#popup-name').textContent;
   const price = parseFloat(popup.querySelector('.popup-price-after-discount').textContent.replace(/Rp\.|\.|,/g, ''));
   const quantity = parseInt(quantityInput.value);
@@ -84,9 +76,16 @@ popupButtonCheckout.addEventListener('click', (e) => {
     });
   }
   updateCartDisplay();
+  updateCartCount();
   popup.classList.toggle('hidden');
+  e.preventDefault();
 });
 // item shopping-cart
+const updateCartCount = () => {
+  const cartCountNumber = shoppingCartButton.querySelector('.cart-count');
+  const count = cartItems.length;
+  cartCountNumber.textContent = count === 0 ? '' : count >= 99 ? '99+' : count.toString();
+};
 
 function updateCartDisplay() {
   const cartContent = document.querySelector('#cart .cart-content');
@@ -96,7 +95,7 @@ function updateCartDisplay() {
   cartItems.forEach((item, index) => {
     total += item.total;
     const cartItem = document.createElement('div');
-    cartItem.className = 'relative flex items-center justify-between w-full p-4 m-4 shadow-lg cart-item';
+    cartItem.className = 'relative flex items-center justify-between w-full p-4 my-4 shadow-[5px_5px_5px_rgb(0,0,0,0.25)] cart-item';
     cartItem.innerHTML = `
           <div class="flex items-center flex-1 ">
               <img src="${item.image}" class="w-16 h-16 object-cover" alt="${item.name}">
@@ -118,12 +117,14 @@ function updateCartDisplay() {
 
   document.querySelector('#checkout-shopping-cart .total-price-cart').textContent = `Rp.${total.toLocaleString('id-ID')}`;
 }
+
 cart.addEventListener('click', (e) => {
   const index = e.target.dataset.index;
 
   if (e.target.classList.contains('remove-item')) {
     cartItems.splice(index, 1);
     updateCartDisplay();
+    updateCartCount();
   }
 
   if (e.target.classList.contains('quantity-minus')) {

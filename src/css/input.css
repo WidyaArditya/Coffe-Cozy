@@ -50,6 +50,11 @@
   @apply rotate-45 mt-[1.16rem];
 }
 
+/* cart count */
+.cart-count {
+  @apply absolute text-sm font-bold text-red-600 underline font-poppins -top-8 left-16;
+}
+
 /* style humberger button */
 .hamburger-btn {
   @apply absolute w-full py-7 bg-white shadow-md right-[0.1rem] top-10 backdrop-blur-md bg-opacity-65;
