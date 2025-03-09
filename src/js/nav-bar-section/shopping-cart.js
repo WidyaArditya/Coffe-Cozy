@@ -13,6 +13,7 @@ const toggleCart = (e) => {
   document.body.classList.toggle('overflow-hidden');
   e.preventDefault();
 };
+
 [shoppingCartButton, closeArrowButton].forEach((button) => button.addEventListener('click', toggleCart));
 
 // popup-checkout
@@ -81,6 +82,7 @@ popupButtonCheckout.addEventListener('click', (e) => {
   popup.classList.toggle('hidden');
   e.preventDefault();
 });
+
 // item shopping-cart
 const updateCartCount = () => {
   const cartCountNumber = shoppingCartButton.querySelector('.cart-count');
@@ -146,6 +148,7 @@ cart.addEventListener('input', (e) => {
     updateCartDisplay();
   }
 });
+
 const updateQuantity = (value) => {
   const quantity = parseInt(quantityInput.value) + value;
   if (quantity < 1) quantity = 1;
@@ -170,6 +173,7 @@ quantityInput.addEventListener('input', () => {
   quantityInput.value = quantity;
   updateTotalPrice();
 });
+
 // event untuk menutup popup dari selain tomobol arrow-left
 document.addEventListener('click', (e) => {
   if (e.target !== popup && !popup.contains(e.target)) {
