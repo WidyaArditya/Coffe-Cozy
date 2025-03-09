@@ -2,7 +2,7 @@ import { setupDragHandler } from './dragHandler.js';
 import { handlerPrevMenu } from './handlerPrevMenu.js';
 import { handlerNextMenu } from './handlerNextMenu.js';
 
-async function createCarousel(menuCarousel, prevMenu, nextMenu) {
+const createCarousel = async (menuCarousel, prevMenu, nextMenu) => {
   let currentIndex = 0;
   let isAnimating = false;
   let visibleItemCount = 0;
@@ -11,7 +11,7 @@ async function createCarousel(menuCarousel, prevMenu, nextMenu) {
     return Array.from(menuCarousel.children).filter((item) => item.style.display !== 'none');
   }
 
-  function calculateVisibleItemCount() {
+  const calculateVisibleItemCount = () => {
     const visibleItems = getVisibleItems();
     if (visibleItems.length === 0) return 0;
 
@@ -22,12 +22,10 @@ async function createCarousel(menuCarousel, prevMenu, nextMenu) {
     const marginRight = parseFloat(itemStyle.marginRight);
     const totalItemWidth = itemWidth + marginLeft + marginRight;
     return Math.floor(containerWidth / totalItemWidth);
-  }
-
-  async function updateCarousel() {
+  };
+  const updateCarousel = async () => {
     if (isAnimating) return;
     isAnimating = true;
-
     const visibleItems = getVisibleItems();
     currentIndex = Math.max(0, Math.min(currentIndex, visibleItems.length - 1));
     if (visibleItems.length === 0) {
@@ -49,17 +47,16 @@ async function createCarousel(menuCarousel, prevMenu, nextMenu) {
     await new Promise((resolve) => setTimeout(resolve, 300));
     isAnimating = false;
     updateButtonState();
-  }
+  };
 
-  function updateButtonState() {
+  const updateButtonState = () => {
     const visibleItems = getVisibleItems();
     const maxIndex = visibleItems.length - visibleItemCount;
-
     nextMenu.disabled = currentIndex >= maxIndex; // Disable next button if at the end
     prevMenu.disabled = currentIndex <= 0; // Disable previous button if at the start
-  }
+  };
 
-  async function updateIndex(index) {
+  const updateIndex = async (index) => {
     const visibleItems = getVisibleItems();
     const maxIndex = Math.max(0, visibleItems.length - 1 - visibleItemCount); // Pastikan maxIndex tidak negatif
     index = Math.max(0, Math.min(index, maxIndex)); // Batasi indeks agar tidak melebihi batas
@@ -77,7 +74,7 @@ async function createCarousel(menuCarousel, prevMenu, nextMenu) {
       menuCarousel.style.transition = 'none'; // Disable animation
       currentIndex = maxIndex; // Update currentIndex
     }
-  }
+  };
 
   // Event listener for next button
   nextMenu.addEventListener('click', async () => {
@@ -132,6 +129,6 @@ async function createCarousel(menuCarousel, prevMenu, nextMenu) {
   await updateCarousel();
   updateButtonState();
   return { updateIndex };
-}
+};
 
 export { createCarousel };

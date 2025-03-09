@@ -3,7 +3,7 @@ import { createSlider } from '../src/js/menu-section/slider.js';
 import { createCarousel } from '../src/js/menu-section/carousel.js';
 import { createFilter } from '../src/js/menu-section/filter.js';
 import '../src/js/nav-bar-section/hamburger.js';
-import '../src/js/nav-bar-section/nav-bar.js';
+import '../src/js/nav-bar-section/scroll-up-hidden.js';
 import '../src/js/nav-bar-section/search.js';
 import '../src/js/nav-bar-section/shopping-cart.js';
 // index.js

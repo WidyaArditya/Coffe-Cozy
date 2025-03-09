@@ -1,5 +1,5 @@
 // filter.js
-async function createFilter(filterButtons, menuItems, updateIndex) {
+const createFilter = async (filterButtons, menuItems, updateIndex) => {
   // Event listener untuk tombol filter
   filterButtons.forEach((button) => {
     button.addEventListener('click', async () => {
@@ -12,7 +12,7 @@ async function createFilter(filterButtons, menuItems, updateIndex) {
   });
 
   // Fungsi untuk memfilter menu
-  async function filterMenu(category, menuItems) {
+  const filterMenu = async (category, menuItems) => {
     if (category === 'all') {
       menuItems.forEach((item) => {
         item.style.display = 'block';
@@ -22,12 +22,12 @@ async function createFilter(filterButtons, menuItems, updateIndex) {
         item.style.display = item.classList.contains(category) ? 'block' : 'none';
       });
     }
-  }
+  };
 
   // Fungsi untuk mengatur ulang indeks carousel ke 0
   function resetCarouselIndex() {
     updateIndex(0); // Setel indeks ke 0 (indeks awal)
   }
-}
+};
 
 export { createFilter };

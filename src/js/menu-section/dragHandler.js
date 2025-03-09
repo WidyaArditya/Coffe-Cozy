@@ -1,5 +1,5 @@
 // dragHandler.js
-async function setupDragHandler(element, onDragEnd) {
+const setupDragHandler = (element, onDragEnd) => {
   let startX = 0;
   let currentTranslate = 0;
   let isDragging = false;
@@ -71,6 +71,6 @@ async function setupDragHandler(element, onDragEnd) {
     },
     { passive: true }
   );
-}
+};
 
 export { setupDragHandler };

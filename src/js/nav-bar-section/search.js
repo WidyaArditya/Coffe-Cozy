@@ -22,7 +22,6 @@ const exitSearch = () => {
 const styleSearchEnter = () => {
   overlay.classList.remove('search-leave', 'search-leave-active');
   overlay.classList.add('search-enter');
-
   setTimeout(() => {
     overlay.classList.remove('search-enter');
     overlay.classList.add('search-enter-active');
@@ -32,7 +31,6 @@ const styleSearchEnter = () => {
 const styleSearchExit = () => {
   overlay.classList.remove('search-enter', 'search-enter-active');
   overlay.classList.add('search-leave');
-
   setTimeout(() => {
     overlay.classList.remove('search-leave');
     overlay.classList.add('search-leave-active');
@@ -55,13 +53,6 @@ arrowUpCircle.addEventListener('click', (e) => {
   }, 300);
 });
 
-fullscreenSearchBox.addEventListener('blur', () => {
-  styleSearchExit();
-  setTimeout(() => {
-    exitSearch();
-  }, 300);
-});
-
 document.addEventListener('mousedown', (e) => {
   if (overlay.classList.contains('search-enter-active') && !e.target.closest('#search-box, #fullscreen-search-box, #arrow-up-circle')) {
     styleSearchExit();
@@ -71,29 +62,9 @@ document.addEventListener('mousedown', (e) => {
   }
 });
 
-// Add event listener to escape key press
+// Add event listener to close search when pressing escape key or enter key
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && overlay.classList.contains('search-enter-active')) {
-    styleSearchExit();
-    setTimeout(() => {
-      exitSearch();
-    }, 300);
-  }
-});
-
-// Add event listener to close search when clicking outside
-document.addEventListener('click', (e) => {
-  if (overlay.classList.contains('search-enter-active') && !e.target.closest('#search-box, #fullscreen-search-box, #arrow-up-circle')) {
-    styleSearchExit();
-    setTimeout(() => {
-      exitSearch();
-    }, 300);
-  }
-});
-
-// Add event listener to close search when pressing enter key
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && overlay.classList.contains('search-enter-active')) {
+  if ((e.key === 'Escape' || e.key === 'Enter') && overlay.classList.contains('search-enter-active')) {
     styleSearchExit();
     setTimeout(() => {
       exitSearch();

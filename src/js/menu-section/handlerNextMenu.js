@@ -1,4 +1,4 @@
-async function handlerNextMenu(currentIndex, menuCarousel, updateIndex, visibleItemCount, nextButton) {
+const handlerNextMenu = async (currentIndex, menuCarousel, updateIndex, visibleItemCount, nextButton) => {
   const visibleItems = Array.from(menuCarousel.children).filter((item) => item.style.display !== 'none');
 
   // Hitung index maksimum yang diperbolehkan
@@ -14,8 +14,7 @@ async function handlerNextMenu(currentIndex, menuCarousel, updateIndex, visibleI
   } else {
     nextButton.disabled = false;
   }
-
   // Perbarui posisi carousel dengan newIndex yang dibatasi
   await updateIndex(newIndex);
-}
+};
 export { handlerNextMenu };

@@ -6,11 +6,11 @@
 
 /* style navbar */
 .nav-style {
-  @apply top-0 left-0 flex fixed items-center w-full py-3 lg:py-1 border-b-[1px] border-b-[#EADBC8] z-[999] bg-[#DAC0A3]
+  @apply top-0 left-0 flex fixed items-center w-full py-3 lg:py-1 border-b-[1px] border-b-[#EADBC8] z-[999] bg-[#DAC0A3];
 }
 
 .brand {
-  @apply text-xl italic font-bold md:text-2xl text-coffe font-roboto
+  @apply text-xl italic font-bold md:text-2xl text-coffe font-roboto;
 }
 
 /* nav in-out */
@@ -20,15 +20,6 @@
 
 .smoth-nav {
   @apply -translate-y-full opacity-0;
-}
-
-/* menu-list */
-.menu-list {
-  @apply absolute hidden w-full main-menu backdrop-filter lg:static lg:block;
-}
-
-.list-ul {
-  @apply block w-full text-center lg:flex lg:space-x-3 lg:mr-12
 }
 
 /* span for hamburger button */
@@ -55,14 +46,9 @@
   @apply absolute text-sm font-bold text-red-600 underline font-poppins -top-8 left-16;
 }
 
-/* style humberger button */
-.hamburger-btn {
-  @apply absolute w-full py-7 bg-white shadow-md right-[0.1rem] top-10 backdrop-blur-md bg-opacity-65;
-}
-
 /* styel for menu after click*/
 .main-menu {
-  @apply right-0 left-0 w-full top-[2.56rem] lg:bg-transparent backdrop-blur-lg bg-[#DAC0A3]/50;
+  @apply right-0 left-0 w-full top-9 lg:bg-transparent backdrop-blur-lg bg-[#DAC0A3]/50;
 }
 
 /* style for transition hamburger menu*/
@@ -106,12 +92,12 @@
 /* style  icon */
 /* shopping-cart and search icon */
 .nav-icon {
-  @apply text-white transition-transform duration-200 translate-x-5 -translate-y-5 hover:-translate-y-[1.35rem] active:opacity-35
+  @apply text-white transition-transform duration-200 translate-x-5 -translate-y-5 hover:-translate-y-[1.35rem] active:opacity-35;
 }
 
 /* arrow-up-circle */
 .arrow-up {
-  @apply absolute p-2 -translate-x-1/2 bg-gray-200 rounded-full cursor-pointer left-1/2 top-6
+  @apply absolute p-2 -translate-x-1/2 bg-gray-200 rounded-full cursor-pointer left-1/2 top-6;
 }
 
 /* menu section */

@@ -1,4 +1,4 @@
-async function createSlider(slideshow) {
+const createSlider = async (slideshow) => {
   const slides = slideshow.children;
   let currentSlide = 0;
   let autoSlideIntervalId = null;
@@ -44,6 +44,6 @@ async function createSlider(slideshow) {
     startAutoSlide,
     stopAutoSlide,
   };
-}
+};
 
 export { createSlider };

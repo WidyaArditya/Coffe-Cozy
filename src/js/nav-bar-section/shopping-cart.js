@@ -2,11 +2,12 @@
 const shoppingCartButton = document.querySelector('#shopping-cart');
 const cart = document.querySelector('#cart');
 const closeArrowButton = document.querySelector('#arrow-left');
+
 const menuItems = document.querySelectorAll('.menu-item');
 const popup = document.querySelector('#popup');
 let cartItems = [];
 let cartCount = '';
-// shopping-cart.js (Perbaikan Final)
+
 const toggleCart = (e) => {
   cart.classList.toggle('hidden');
   document.body.classList.toggle('overflow-hidden');
@@ -120,36 +121,28 @@ function updateCartDisplay() {
 
 cart.addEventListener('click', (e) => {
   const index = e.target.dataset.index;
-
+  const item = cartItems[index];
   if (e.target.classList.contains('remove-item')) {
     cartItems.splice(index, 1);
     updateCartDisplay();
     updateCartCount();
-  }
-
-  if (e.target.classList.contains('quantity-minus')) {
-    if (cartItems[index].quantity > 1) {
-      cartItems[index].quantity--;
-      cartItems[index].total = cartItems[index].quantity * cartItems[index].price;
-      updateCartDisplay();
-    }
-  }
-
-  if (e.target.classList.contains('quantity-plus')) {
-    cartItems[index].quantity++;
-    cartItems[index].total = cartItems[index].quantity * cartItems[index].price;
+  } else if (e.target.classList.contains('quantity-minus')) {
+    item.quantity > 1 && (item.quantity--, (item.total = item.quantity * item.price));
+    updateCartDisplay();
+  } else if (e.target.classList.contains('quantity-plus')) {
+    item.quantity++, (item.total = item.quantity * item.price);
     updateCartDisplay();
   }
 });
 
 // Handle input manual
-document.querySelector('#cart').addEventListener('input', (e) => {
+cart.addEventListener('input', (e) => {
   if (e.target.classList.contains('quantity-input')) {
     const index = e.target.dataset.index;
+    const item = cartItems[index];
     const newQuantity = parseInt(e.target.value) || 1;
-
-    cartItems[index].quantity = newQuantity;
-    cartItems[index].total = cartItems[index].quantity * cartItems[index].price;
+    item.quantity = newQuantity;
+    item.total = item.quantity * item.price;
     updateCartDisplay();
   }
 });
@@ -177,41 +170,11 @@ quantityInput.addEventListener('input', () => {
   quantityInput.value = quantity;
   updateTotalPrice();
 });
-
-const search = document.querySelector('#search').addEventListener('click', (e) => {
-  popup.classList.add('hidden');
-  e.preventDefault();
-  e.stopPropagation();
-});
-
+// event untuk menutup popup dari selain tomobol arrow-left
 document.addEventListener('click', (e) => {
   if (e.target !== popup && !popup.contains(e.target)) {
     popup.classList.add('hidden');
     e.preventDefault();
-  }
-});
-
-// Add event listener to popupButtonCheckout to prevent default behavior
-popupButtonCheckout.addEventListener('click', (e) => {
-  e.preventDefault();
-});
-
-// Add event listener to popup to prevent default behavior
-popup.addEventListener('click', (e) => {
-  e.stopPropagation();
-});
-
-// Add event listener to popup to handle keyboard navigation
-popup.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    popup.classList.add('hidden');
-  }
-});
-
-// Add event listener to popup to handle focus trap
-popup.addEventListener('focusin', (e) => {
-  if (e.target === popup) {
-    popup.querySelector('#popup-button-checkout').focus();
   }
 });
 
@@ -222,6 +185,4 @@ popupButtonCheckout.addEventListener('submit', (e) => {
   formData.append('name', popup.querySelector('#popup-name').textContent);
   formData.append('price', popup.querySelector('.popup-price-after-discount').textContent);
   formData.append('quantity', quantityInput.value);
-  // Send form data to server
-  console.log(formData);
 });
