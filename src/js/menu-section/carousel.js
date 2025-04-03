@@ -1,35 +1,75 @@
-import { setupDragHandler } from './dragHandler.js';
+import { DragHandler } from './dragHandler.js';
 import { handlerPrevMenu } from './handlerPrevMenu.js';
 import { handlerNextMenu } from './handlerNextMenu.js';
 
-const createCarousel = async (menuCarousel, prevMenu, nextMenu) => {
-  let currentIndex = 0;
-  let isAnimating = false;
-  let visibleItemCount = 0;
+class createCarousel {
+  constructor(menuCarousel, prevMenu, nextMenu) {
+    this.menuCarousel = menuCarousel;
+    this.prevMenu = prevMenu;
+    this.nextMenu = nextMenu;
+    this.currentIndex = 0;
+    this.isAnimation = false;
+    this.visibleItemCount = 0;
+    this.initCarousel();
+  }
+  initCarousel() {
+    this.visibleItemCount = this.calculateVisibleItemCount();
+    this.updateCarousel();
 
-  function getVisibleItems() {
-    return Array.from(menuCarousel.children).filter((item) => item.style.display !== 'none');
+    // NextButton
+    this.nextMenu.addEventListener('click', async () => {
+      this.visibleItemCount = this.calculateVisibleItemCount();
+      const visibleItems = this.getVisibleItems();
+      await handlerNextMenu(this.currentIndex, this.updateIndex.bind(this), this.visibleItemCount, this.nextMenu, visibleItems);
+    });
+
+    // prevButton
+    this.prevMenu.addEventListener('click', async () => {
+      this.visibleItemCount = this.calculateVisibleItemCount();
+      await handlerPrevMenu(this.currentIndex, this.updateIndex.bind(this), this.visibleItemCount, this.prevMenu);
+    });
+
+    // DragHandler
+    new DragHandler(this.menuCarousel, async (newIndex) => {
+      const visibleItems = this.getVisibleItems();
+      this.visibleItemCount = this.calculateVisibleItemCount();
+      const maxIndex = Math.max(0, visibleItems.length - 1 - this.visibleItemCount);
+      newIndex = Math.max(0, Math.min(newIndex, maxIndex));
+      await this.updateIndex(newIndex);
+      await this.updateCarousel();
+    });
+
+    // resize Handler
+    window.addEventListener('resize', async () => {
+      await this.handleResize();
+    });
   }
 
-  const calculateVisibleItemCount = () => {
-    const visibleItems = getVisibleItems();
-    if (visibleItems.length === 0) return 0;
+  getVisibleItems() {
+    return Array.from(this.menuCarousel.children).filter((item) => window.getComputedStyle(item).display !== 'none');
+  }
 
-    const containerWidth = menuCarousel.parentElement.clientWidth;
+  calculateVisibleItemCount() {
+    const visibleItems = this.getVisibleItems();
+    if (visibleItems.length === 0) return 0;
+    const containerWidth = this.menuCarousel.parentElement.clientWidth;
     const itemStyle = window.getComputedStyle(visibleItems[0]);
     const itemWidth = visibleItems[0].clientWidth;
     const marginLeft = parseFloat(itemStyle.marginLeft);
     const marginRight = parseFloat(itemStyle.marginRight);
     const totalItemWidth = itemWidth + marginLeft + marginRight;
     return Math.floor(containerWidth / totalItemWidth);
-  };
-  const updateCarousel = async () => {
-    if (isAnimating) return;
-    isAnimating = true;
-    const visibleItems = getVisibleItems();
-    currentIndex = Math.max(0, Math.min(currentIndex, visibleItems.length - 1));
+  }
+  async updateCarousel() {
+    if (this.isAnimating) return;
+    this.isAnimating = true;
+
+    const visibleItems = this.getVisibleItems();
+    const maxIndex = Math.max(0, visibleItems.length - this.visibleItemCount - 1);
+    this.currentIndex = Math.max(0, Math.min(this.currentIndex, maxIndex));
+
     if (visibleItems.length === 0) {
-      isAnimating = false;
+      this.isAnimating = false;
       return; // No visible items
     }
 
@@ -37,98 +77,53 @@ const createCarousel = async (menuCarousel, prevMenu, nextMenu) => {
     const marginLeft = parseFloat(itemStyle.marginLeft);
     const marginRight = parseFloat(itemStyle.marginRight);
     const itemWidth = visibleItems[0].clientWidth + marginLeft + marginRight;
+    const translateX = this.currentIndex * itemWidth;
 
-    const maxTranslateX = Math.max(0, (visibleItems.length - visibleItemCount) * itemWidth); // Pastikan maxTranslateX tidak negatif
-    const translateX = Math.min(currentIndex * itemWidth, maxTranslateX);
-
-    menuCarousel.style.transform = `translateX(-${translateX}px)`;
-    menuCarousel.style.transition = 'transform 0.3s ease';
-
+    this.menuCarousel.style.transform = `translateX(-${translateX}px)`;
+    this.menuCarousel.style.transition = 'transform 0.3s ease';
     await new Promise((resolve) => setTimeout(resolve, 300));
-    isAnimating = false;
-    updateButtonState();
-  };
+    this.isAnimating = false;
 
-  const updateButtonState = () => {
-    const visibleItems = getVisibleItems();
-    const maxIndex = visibleItems.length - visibleItemCount;
-    nextMenu.disabled = currentIndex >= maxIndex; // Disable next button if at the end
-    prevMenu.disabled = currentIndex <= 0; // Disable previous button if at the start
-  };
+    this.updateButtonState();
+  }
 
-  const updateIndex = async (index) => {
-    const visibleItems = getVisibleItems();
-    const maxIndex = Math.max(0, visibleItems.length - 1 - visibleItemCount); // Pastikan maxIndex tidak negatif
-    index = Math.max(0, Math.min(index, maxIndex)); // Batasi indeks agar tidak melebihi batas
-    currentIndex = index;
-    await updateCarousel();
+  updateButtonState() {
+    const visibleItems = this.getVisibleItems();
+    const maxIndex = visibleItems.length - 1 - this.visibleItemCount;
+    this.nextMenu.disabled = this.currentIndex >= maxIndex; // Disable next button if at the end
+    this.prevMenu.disabled = this.currentIndex <= 0; // Disable previous button if at the start
+  }
 
-    // Prevent overscrolling
-    if (currentIndex >= maxIndex) {
-      const itemStyle = window.getComputedStyle(visibleItems[0]);
-      const marginLeft = parseFloat(itemStyle.marginLeft);
-      const marginRight = parseFloat(itemStyle.marginRight);
-      const itemWidth = visibleItems[0].clientWidth + marginLeft + marginRight;
+  async updateIndex(index) {
+    const visibleItems = this.getVisibleItems();
+    this.visibleItemCount = this.calculateVisibleItemCount();
+    const maxIndex = Math.max(0, visibleItems.length - this.visibleItemCount);
+    index = Math.max(0, Math.min(index, maxIndex));
+    this.currentIndex = index; // Update currentIndex here
+    await this.updateCarousel();
+  }
 
-      menuCarousel.style.transform = `translateX(-${maxIndex * itemWidth}px)`;
-      menuCarousel.style.transition = 'none'; // Disable animation
-      currentIndex = maxIndex; // Update currentIndex
-    }
-  };
-
-  // Event listener for next button
-  nextMenu.addEventListener('click', async () => {
-    visibleItemCount = calculateVisibleItemCount();
-    await handlerNextMenu(currentIndex, menuCarousel, updateIndex, visibleItemCount, nextMenu);
-  });
-
-  // Event listener for previous button
-  prevMenu.addEventListener('click', async () => {
-    visibleItemCount = calculateVisibleItemCount();
-    await handlerPrevMenu(currentIndex, updateIndex, visibleItemCount, prevMenu);
-  });
-
-  // Setup drag handler
-  setupDragHandler(menuCarousel, async (newIndex) => {
-    const visibleItems = getVisibleItems();
-    const visibleItemCount = calculateVisibleItemCount();
-    const maxIndex = Math.max(0, visibleItems.length - 1 - visibleItemCount); // Pastikan maxIndex tidak negatif
-
-    newIndex = Math.max(0, Math.min(newIndex, maxIndex)); // Batasi indeks agar tidak melebihi batas
-    await updateIndex(newIndex);
-    await updateCarousel();
-  });
-  // Event listener for resize
-  window.addEventListener('resize', async () => {
-    visibleItemCount = calculateVisibleItemCount();
-    const visibleItems = getVisibleItems();
-
+  async handleResize() {
+    const visibleItems = this.getVisibleItems();
     if (visibleItems.length === 0) return; // No visible items
+    const newVisibleItemCount = this.calculateVisibleItemCount();
+    const maxIndex = Math.max(0, visibleItems.length - 1 - newVisibleItemCount);
 
-    const itemStyle = window.getComputedStyle(visibleItems[0]);
-    const marginLeft = parseFloat(itemStyle.marginLeft);
-    const marginRight = parseFloat(itemStyle.marginRight);
-    const itemWidth = visibleItems[0].clientWidth + marginLeft + marginRight;
+    const currentTranslateX = parseFloat(this.menuCarousel.style.transform.match(/-?\d*\.?\d+/)[0]);
+    const itemWidth = visibleItems[0].clientWidth + parseFloat(window.getComputedStyle(visibleItems[0]).marginLeft) + parseFloat(window.getComputedStyle(visibleItems[0]).marginRight);
+    this.currentIndex = Math.floor(-currentTranslateX / itemWidth);
 
-    // Ensure currentIndex does not exceed bounds
-    const maxIndex = visibleItemCount;
-    currentIndex = Math.max(0, Math.min(currentIndex, maxIndex));
+    this.currentIndex = Math.max(0, Math.min(this.currentIndex, maxIndex));
 
-    // Update carousel position
-    menuCarousel.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
-    menuCarousel.style.transition = 'none'; // Disable animation during resize
+    const translateX = this.currentIndex * itemWidth;
+    this.menuCarousel.style.transition = 'none'; // Disable transition for immediate update
+    this.menuCarousel.style.transform = `translateX(-${translateX}px)`; // Update position
 
-    // After resize, enable animation again
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    menuCarousel.style.transition = 'transform 0.3s ease';
-    updateButtonState(); // Update button states
-  });
+    await new Promise((resolve) => setTimeout(resolve, 0)); // Allow DOM to update
+    this.menuCarousel.style.transition = 'transform 0.3s ease'; // Re-enable transition
 
-  // Initialize carousel
-  visibleItemCount = calculateVisibleItemCount();
-  await updateCarousel();
-  updateButtonState();
-  return { updateIndex };
-};
+    this.updateButtonState(); // Update button states based on new index
+  }
+}
 
 export { createCarousel };

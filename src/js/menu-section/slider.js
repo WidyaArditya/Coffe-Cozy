@@ -1,49 +1,54 @@
-const createSlider = async (slideshow) => {
-  const slides = slideshow.children;
-  let currentSlide = 0;
-  let autoSlideIntervalId = null;
-  const slideCount = slides.length;
+class createSlider {
+  constructor(slideshow) {
+    this.slideshow = slideshow;
+    this.slides = slideshow.children;
+    this.currentSlide = 0;
+    this.autoSlideIntervalId = null;
+    this.slideCount = this.slides.length;
 
-  function showSlide(index) {
-    if (index < 0 || index >= slideCount) return;
-    currentSlide = index;
-    slideshow.style.transform = `translateX(-${currentSlide * 100}%)`;
-    slideshow.style.transition = 'transform 0.3s ease';
+    this.showSlide(this.currentSlide);
+  }
+  showSlide(index) {
+    if (index < 0 || index >= this.slideCount) return;
+    this.currentSlide = index;
+    this.updatePosition();
+  }
+  updatePosition() {
+    this.slideshow.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+    this.slideshow.style.transition = 'transform 0.3s ease';
+  }
+  nextSlide() {
+    this.stopAutoSlide();
+    this.showSlide((this.currentSlide + 1) % this.slideCount);
+    this.restartAutoSlide();
   }
 
-  function nextSlide() {
-    showSlide((currentSlide + 1) % slideCount);
+  prevSlide() {
+    this.stopAutoSlide();
+    this.showSlide((this.currentSlide - 1 + this.slideCount) % this.slideCount);
+    this.restartAutoSlide();
   }
 
-  function prevSlide() {
-    showSlide((currentSlide - 1 + slideCount) % slideCount);
-  }
-
-  function startAutoSlide(interval = 5000) {
-    if (autoSlideIntervalId) {
-      clearInterval(autoSlideIntervalId);
+  startAutoSlide(interval = 5000) {
+    if (this.autoSlideIntervalId) {
+      this.stopAutoSlide();
     }
-    autoSlideIntervalId = setInterval(() => {
-      nextSlide();
+    this.autoSlideIntervalId = setInterval(() => {
+      this.nextSlide();
     }, interval);
   }
 
-  function stopAutoSlide() {
-    if (autoSlideIntervalId) {
-      clearInterval(autoSlideIntervalId);
-      autoSlideIntervalId = null;
+  stopAutoSlide() {
+    if (this.autoSlideIntervalId) {
+      clearInterval(this.autoSlideIntervalId);
+      this.autoSlideIntervalId = null;
     }
   }
-
-  showSlide(0);
-
-  return {
-    showSlide,
-    nextSlide,
-    prevSlide,
-    startAutoSlide,
-    stopAutoSlide,
-  };
-};
+  restartAutoSlide(delay = 10000) {
+    setTimeout(() => {
+      this.startAutoSlide();
+    }, delay);
+  }
+}
 
 export { createSlider };

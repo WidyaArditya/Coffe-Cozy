@@ -1,10 +1,15 @@
-const navToggle = {
-  hamburger: document.querySelector('#hamburger'),
-  navMenu: document.querySelector('#nav-menu'),
-  isHidden: true,
-  animating: false,
+class NavToggle {
+  constructor() {
+    this.hamburger = document.querySelector('#hamburger');
+    this.navMenu = document.querySelector('#nav-menu');
+    this.isHidden = true;
+    this.animating = false;
+    this.hamburger.addEventListener('click', this.toggle.bind(this));
+    document.addEventListener('click', this.handleDocumentClick.bind(this));
+    window.addEventListener('resize', this.handleWindowsResize.bind(this));
+  }
 
-  showMenu: function () {
+  showMenu() {
     this.hamburger.classList.add('hamburger-active');
     this.navMenu.classList.remove('hidden', 'menu-leave', 'menu-leave-active');
     this.navMenu.classList.add('menu-enter');
@@ -13,8 +18,8 @@ const navToggle = {
       this.navMenu.classList.add('menu-enter-active');
       this.animating = false;
     }, 100);
-  },
-  hideMenu: function () {
+  }
+  hideMenu() {
     this.navMenu.classList.remove('menu-enter', 'menu-enter-active');
     this.navMenu.classList.add('menu-leave');
     setTimeout(() => {
@@ -26,8 +31,8 @@ const navToggle = {
         this.animating = false;
       }, 300);
     }, 300);
-  },
-  toggle: function () {
+  }
+  toggle() {
     if (this.animating) return;
     this.animating = true;
     this.isHidden = !this.isHidden;
@@ -36,15 +41,15 @@ const navToggle = {
     } else {
       this.hideMenu();
     }
-  },
-  handleDocumentClick: function (e) {
+  }
+  handleDocumentClick(e) {
     if (e.target !== this.hamburger && !this.navMenu.contains(e.target) && !this.isHidden && !this.animating) {
       this.toggle();
       e.preventDefault();
       e.stopPropagation();
     }
-  },
-  handleWindowsResize: function () {
+  }
+  handleWindowsResize() {
     if (window.innerWidth > 768) {
       this.showMenu();
       this.isHidden = false;
@@ -52,11 +57,6 @@ const navToggle = {
       this.hideMenu();
       this.isHidden = true;
     }
-  },
-  init: function () {
-    this.hamburger.addEventListener('click', this.toggle.bind(this));
-    document.addEventListener('click', this.handleDocumentClick.bind(this));
-    window.addEventListener('resize', this.handleWindowsResize.bind(this));
-  },
-};
-navToggle.init();
+  }
+}
+const navToggle = new NavToggle();
